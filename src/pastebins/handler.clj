@@ -32,6 +32,7 @@
   )
 
 (defn create-pastebin [flds]
+  (println "creating post " flds)
   (model/create-post (flds-to-post flds))
   (resp/redirect "/list"))
 
@@ -39,6 +40,7 @@
   (let [userid (session/get :userid 1)
         post (flds-to-post flds)]
     ;; TODO: security check userid == f_author
+    (println "updating " post)
     (model/update-post post)
     (session/flash-put! "paste-edit-form-flash" (str "Code #" (:id post) " saved!"))
     (view/show-pastebin-edit-form userid post)))
@@ -64,7 +66,7 @@
   (POST "/code/:id" req (update-post (:params req)))
 
   (route/resources "/")
-  (route/not-found "Page not found")
+  (route/not-found (slurp (clojure.java.io/resource "public/404.html")))
 
   )
 

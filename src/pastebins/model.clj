@@ -25,7 +25,7 @@
   (select post
     (order :id :desc)
     (limit default-page-items)
-    (offset (inc (* (dec page) default-page-items)))
+    (offset (* (dec page) default-page-items))
     ))
 
 (defn select-post [id]

@@ -15,12 +15,10 @@
 ;;
 ;; list of pastebins
 (def list-html
-;  (l/parse-fragment
     (slurp (clojure.java.io/resource "public/template/list.html")))
 
 ;; one of pastebin on list
 (def list-item-html
-;  (l/parse-fragment
     (slurp (clojure.java.io/resource "public/template/list-item.html")))
 
 
@@ -30,12 +28,6 @@
     (slurp (clojure.java.io/resource "public/template/pastebin.html"))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Fragments
-
-;(defragment main-content-frag [content]
-;  (l/element= :content) (l/content content)
-
-
-;(def pastebin-item (l/fragment list-html (l/id= "pastebin-item")))
 
 (def max-preview-lines 5)
 
@@ -49,11 +41,11 @@
              content)
    codestr (str "/code/" id)]
 
-  (l/class= "item-title") (comp  (l/attr :href codestr) (l/content title))
-  (l/class= "item-link") (l/attr :href codestr)
-  (l/class= "itemnum") (l/content (str "Code paste #" id))
-  (l/class= "code") (l/content content))
-
+  (l/class= :item-title) (comp  (l/attr :href codestr) (l/content title))
+  (l/class= :item-link) (l/attr :href codestr)
+  (l/class= :itemnum) (l/content (str "Code paste #" id))
+  (l/class= :code) (l/content content))
+                             pastebin-edit-html
 (l/defragment pastebin-list-frag list-html [pageno items]
   (l/id= "items") (l/content
     (for [item items]
@@ -61,14 +53,13 @@
   (l/class= :pageno) (l/attr :href (str "/list?page=" (+ pageno 1))))
 
 
-(def pastebin-edit-form (l/select pastebin-edit-html (l/id= "codeedit")))
-
-(l/defragment pastebin-edit-item-frag pastebin-edit-form
+(l/defragment pastebin-edit-frag pastebin-edit-html
   [{:keys [id title description code action]}]
-    (l/attr= :name "title") (l/attr :value title)
-    (l/attr= :name "description") (l/content description)
-    (l/attr= :name "code") (l/content code)
+    (l/attr= :name :title) (l/attr :value title)
+    (l/attr= :name :description) (l/content description)
+    (l/attr= :name :code) (l/content code)
     (l/element= :form) (l/attr :action (if-not (nil? id) (str "/code/" id) ""))
+    (l/class= :flash) (l/content (session/flash-get "paste-edit-form-flash"))
   )
 
 
@@ -83,20 +74,15 @@
 
 ;; Добавление/Редактирования куска кода
 (defn show-pastebin-edit-form
-  ; Добавление
+  ;; Добавление
   ([userid]
-    (println "userid=" userid)
-    (l/document pastebin-edit-html
-      (l/element= :title) (l/content (str "Add new code"))
-      (l/class= :flash) (l/content (session/flash-get "paste-edit-form-flash"))
-      (l/id= :content) (l/content (pastebin-edit-item-frag {:title "" :description "" :code ""}))
-      ))
+    ;(println "userid=" userid)
+    (l/document main-html-parsed
+      (l/element= :title) (l/content "Add new code")
+      (l/id= :content) (l/content (pastebin-edit-frag {:title "" :description "" :code ""} ))))
   ;; Редактирование
   ([userid {:keys [id title description ts content]}]
-    (println "userid=" userid)
-    (l/document pastebin-edit-html
+    ;(println "userid=" userid)
+    (l/document main-html-parsed
       (l/element= :title) (l/content (str "Edit code " id))
-      (l/class= :flash) (l/content (session/flash-get "paste-edit-form-flash"))
-      (l/id= :content) (l/content (pastebin-edit-item-frag {:id id :title title :description description :code content}))
-      ))
-  )
+      (l/id= :content) (l/content (pastebin-edit-frag {:id id :title title :description description :code content} )))))
