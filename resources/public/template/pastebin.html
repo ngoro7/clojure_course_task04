@@ -9,7 +9,23 @@
         <textarea name="description" placeholder="Description" cols="120" rows="2">TODO</textarea>
     </label><br>
     <label>Your code<br>
-        <textarea name="code" placeholder="Your code" cols="120" rows="10">TODO</textarea>
+        <textarea id="code" name="code" placeholder="Your code" cols="120" rows="10">TODO</textarea>
     </label><br>
     <input type="submit" value="Save code">
 </form>
+
+<div id="hypercomments_widget"></div>
+<script type="text/javascript">
+    _hcwp = window._hcwp || [];
+    _hcwp.push({widget:"Stream", widget_id:6792});
+    (function() {
+        if("HC_LOAD_INIT" in window)return;
+        HC_LOAD_INIT = true;
+        var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+        var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+        hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/6792/"+lang+"/widget.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hcc, s.nextSibling);
+    })();
+</script>
+<a href="http://hypercomments.com" class="hc-link" title="comments widget">comments powered by HyperComments</a>
