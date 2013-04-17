@@ -4,10 +4,11 @@
 
 (def default-conn {:classname "com.mysql.jdbc.Driver"
                    :subprotocol "mysql"
-                   :user "pb"
-                   :password "pbkey"
-                   :subname "//127.0.0.1:3306/pastebins?useUnicode=true&characterEncoding=utf8"
+                   :user "***"
+                   :password "***"
+                   :subname "//127.0.0.1:3306/pb?useUnicode=true&characterEncoding=utf8"
                    :delimiters "`"})
+
 
 (defdb korma-db default-conn)
 
