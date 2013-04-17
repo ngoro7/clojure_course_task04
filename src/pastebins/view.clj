@@ -35,16 +35,19 @@
   ; shorten content text to 5 lines
   [content-lines (clojure.string/split-lines content)
    content (if (< max-preview-lines (count content-lines))
-             (->> content-lines
-               (take max-preview-lines)
-               (clojure.string/join "\n"))
+             (str (->> content-lines
+                   (take max-preview-lines)
+                   (clojure.string/join "\n")
+                   )
+               "\n...")
              content)
    codestr (str "/code/" id)]
 
   (l/class= :item-title) (comp  (l/attr :href codestr) (l/content title))
   (l/class= :item-link) (l/attr :href codestr)
-  (l/class= :itemnum) (l/content (str "Code paste #" id))
-  (l/class= :code) (l/content content))
+  (l/class= :itemnum) (l/content (str "Code #" id))
+  (l/class= :description) (l/content description)
+  (l/class= :codeblock) (l/content content))
                              pastebin-edit-html
 (l/defragment pastebin-list-frag list-html [pageno items]
   (l/id= "items") (l/content

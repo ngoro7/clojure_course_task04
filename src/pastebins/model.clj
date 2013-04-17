@@ -19,7 +19,7 @@
   )
 
 ;;;;;;;;;;
-(def default-page-items 2)
+(def default-page-items 5)
 
 (defn select-posts [page]
   (select post
